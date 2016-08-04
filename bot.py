@@ -15,9 +15,9 @@ def get_games():
     resp = api.get_live_league_games()
     ret = []
     for game in resp['games']:
-        if game['league_id']:
+        if game['league_id'] == 4664:
             ret.append(game)
-    return ret[:10]
+    return ret
 
 
 def describe(game, time=False):

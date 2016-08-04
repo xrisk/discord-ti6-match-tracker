@@ -69,6 +69,7 @@ async def on_message(message):
 async def update_tracker(last_known):
 
     current = get_games()
+    print(current)
     msg = []
 
     for i in range(len(last_known)):
@@ -87,7 +88,7 @@ async def update_tracker(last_known):
             last_known.append(i)
 
     if msg:
-        client.send_message(client.get_server("195955299482337281"),
+        await client.send_message(client.get_server("195955299482337281"),
                             "\n".join(msg))
 
     await asyncio.sleep(60)
@@ -96,6 +97,7 @@ async def update_tracker(last_known):
 
 @client.event
 async def on_ready():
+    print("pew pew")
     await update_tracker([])
     # loop = asyncio.get_event_loop()
     # loop.call_soon(update_tracker, [], loop)

@@ -51,11 +51,19 @@ def get_winner(mid):
     if i['radiant_win']:
         if 'radiant_team' in i:
             return i['radiant_team']['team_name']
+        elif 'radiant_guild_name' in i:
+            return i['radiant_guild_name']
+        elif 'radiant_name' in i:
+            return i['radiant_name']
         else:
             return "Radiant"
     else:
         if 'dire_team' in i:
             return i['radiant_team']['team_name']
+        elif 'dire_guild_name' in i:
+            return i['dire_guild_name']
+        elif 'dire_name' in i:
+            return i['dire_name']
         else:
             return "Dire"
 
@@ -72,22 +80,22 @@ async def update_tracker(last_known):
     msg = []
 
     for i in range(len(last_known)):
-        mid = last_known[i]['match_id']
-        if mid not in [x['match_id'] for x in current]:
-            d = describe(last_known[i])
-            print(mid)
-            try:
-                victor = get_winner(mid)
-                msg.append("{} has finished. {} victorious!".format(d, victor))
-            except:
-                pass
-            del last_known[i]
-            i -= 1
+        if last_known[i] != {}:
+            mid = last_known[i]['match_id']
+            if mid not in [x['match_id'] for x in current]:
+                d = describe(last_known[i])
+                print(mid)
+                try:
+                    victor = get_winner(mid)
+                    msg.append("{} has finished. {} victorious!".format(d, victor))
+                except:
+                    pass
+                last_known[i] = {} # dirty hack
 
     for i in current:
         d = describe(i)
         mid = i['match_id']
-        if mid not in [x['match_id'] for x in last_known]:
+        if mid not in [x.get('match_id', -1) for x in last_known]:
             msg.append("{} has started!".format(d))
             last_known.append(i)
 
@@ -115,7 +123,6 @@ def describe_live_games():
         return "No games in progress."
 
 if __name__ == "__main__":
-    print(os.environ)
     _thread.start_new_thread(app.run, (),
                              {"port": os.environ.get('PORT', 5000), 'host': '0.0.0.0'})
     # print("test")

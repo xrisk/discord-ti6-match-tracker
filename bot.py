@@ -67,9 +67,8 @@ async def on_message(message):
 
 
 async def update_tracker(last_known):
-
+    
     current = get_games()
-    print(current)
     msg = []
 
     for i in range(len(last_known)):
@@ -79,6 +78,7 @@ async def update_tracker(last_known):
             victor = get_winner(mid)
             msg.append("{} has finished. {} victorious!".format(d, victor))
             del last_known[i]
+            i -= 1
 
     for i in current:
         d = describe(i)
@@ -91,13 +91,12 @@ async def update_tracker(last_known):
         await client.send_message(client.get_server("195955299482337281"),
                             "\n".join(msg))
 
-    await asyncio.sleep(60)
+    await asyncio.sleep(10)
     await update_tracker(last_known)
 
 
 @client.event
 async def on_ready():
-    print("pew pew")
     await update_tracker([])
     # loop = asyncio.get_event_loop()
     # loop.call_soon(update_tracker, [], loop)
@@ -112,7 +111,8 @@ def describe_live_games():
         return "No games in progress."
 
 if __name__ == "__main__":
+    print(os.environ)
     _thread.start_new_thread(app.run, (),
-                             {"port": os.environ.get('PORT', 5000)})
+                             {"port": os.environ.get('PORT', 5000), 'host': '0.0.0.0'})
     # print("test")
     client.run('MjEwNDQwMTk1NDU4MzM0NzIw.CoO3oQ.aLq9tFdUv8QIO0l26vjy8PB8JMM')

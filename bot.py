@@ -78,6 +78,9 @@ async def update_tracker(last_known):
     
     current = get_games()
     msg = []
+    
+    print([x.get('match_id', -1) for x in last_known])
+    print(list([x['match_id'] for x in current]))
 
     for i in range(len(last_known)):
         if last_known[i] != {}:
@@ -103,7 +106,7 @@ async def update_tracker(last_known):
         await client.send_message(client.get_server("195955299482337281"),
                             "\n".join(msg))
 
-    await asyncio.sleep(10)
+    await asyncio.sleep(60)
     await update_tracker(last_known)
 
 

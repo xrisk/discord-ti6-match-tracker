@@ -35,7 +35,11 @@ def describe(game, time=False):
     num = game.get('game_number', 1)
 
     if time:
-        time = int(game['scoreboard']['duration']) // 60
+        time = 0
+        try:
+            time = int(game['scoreboard']['duration']) // 60
+        except:
+            pass
         return '{} vs {} Game {} ({} mins)'.format(radiant, dire, num, time)
     else:
         return '{} vs {} Game {}'.format(radiant, dire, num)

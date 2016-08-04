@@ -75,8 +75,12 @@ async def update_tracker(last_known):
         mid = last_known[i]['match_id']
         if mid not in [x['match_id'] for x in current]:
             d = describe(last_known[i])
-            victor = get_winner(mid)
-            msg.append("{} has finished. {} victorious!".format(d, victor))
+            print(mid)
+            try:
+                victor = get_winner(mid)
+                msg.append("{} has finished. {} victorious!".format(d, victor))
+            except:
+                pass
             del last_known[i]
             i -= 1
 

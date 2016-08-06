@@ -78,8 +78,10 @@ async def on_message(message):
     elif message.content.startswith('!pause'):
         paused = True
         await client.send_message(message.channel, "The bot is paused.")
-    elif message.content.startswith('!resume, "The bot has been unpaused.'):
+    elif message.content.startswith('!resume'):
         paused = False
+        await client.send_message(message.channel,
+                                  "The bot has been unpaused.")
 
 
 async def update_tracker(last_known):

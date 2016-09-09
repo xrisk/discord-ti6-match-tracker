@@ -1,5 +1,6 @@
 import _thread
 import asyncio
+import config
 import discord
 import dota2api
 import os
@@ -7,7 +8,7 @@ import os
 from flask import Flask
 app = Flask(__name__)
 
-api = dota2api.Initialise("B57B59DCAED83EF462AC75019B4F0804")
+api = dota2api.Initialise(config.get("D2_API_KEY"))
 client = discord.Client()
 
 paused = False
@@ -115,7 +116,8 @@ async def update_tracker(last_known):
                 last_known.append(i)
 
         if msg:
-            await client.send_message(client.get_server("195955299482337281"),
+            await client.send_message(client.get_server(
+                                      config.get("DISCORD_CHANNEL_ID")),
                                       "\n".join(msg))
 
     await asyncio.sleep(60)
@@ -142,4 +144,4 @@ if __name__ == "__main__":
                              {"port": os.environ.get('PORT', 5000),
                               'host': '0.0.0.0'})
     # print("test")
-    client.run('MjEwNDQwMTk1NDU4MzM0NzIw.CoO3oQ.aLq9tFdUv8QIO0l26vjy8PB8JMM')
+    client.run(config.get("DISCORD_KEY"))
